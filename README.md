@@ -45,3 +45,23 @@
 - 本仓库不申请 INTERNET 权限；所有内容皆本地离线。
 - EPUB 解析器为轻量实现，可处理常见 xhtml 结构；复杂 EPUB 若解析失败，可先用桌面工具转简化版再导入。
 - 代码以清晰稳定为先，后续可逐步增强（多音色、角色语速、插画包扩展等）。
+
+---
+
+CI 构建与发布
+- 触发方式
+  - Push 到 main：自动构建，不发版（仅产出 Artifacts）
+  - 手动触发：Actions → Android CI → Run workflow（分支选 main）
+  - 发布触发（自动创建 Release 并附 APK）：
+    - 推送 tag：git tag v1.0.2 && git push origin v1.0.2
+    - 或者提交信息包含 [release] 的 push 到 main（成功构建后自动生成下一个 v* 标签并发版）
+- 产物
+  - app-debug.apk：已用调试证书签名，手机可直接安装
+  - app-release-unsigned.apk：未签名，保留为分发包/后续自签
+- 下载位置
+  - Actions 运行详情页 → Artifacts（app-apks）
+  - Releases 页面（打 tag 或 [release] 提交触发）
+- 说明
+  - 自动打 tag 采用补丁位 +1 的语义版本（最新 vX.Y.Z → vX.Y.Z+1）
+  - 默认保持“无签名 release”，仅提供 debug 已签名便于测试
+  - 工作流文件：.github/workflows/android.yml
