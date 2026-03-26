@@ -1,4 +1,4 @@
-# Top-level Gradle settings
+// Top-level Gradle settings
 
 pluginManagement {
     repositories {
