@@ -13,7 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+        android:theme="@style/Theme.SproutTales">
 
         <service
             android:name="app.sprouttales.media.PlayerService"
