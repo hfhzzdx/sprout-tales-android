@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Local build helper (optional)
-./gradlew :tools:generator:run assembleRelease
+# Generate full offline stories for debug too
+./gradlew :tools:generator:run assembleDebug
 
-APK=app/build/outputs/apk/release/app-release-unsigned.apk
+APK=app/build/outputs/apk/debug/app-debug.apk
 if [ -f "$APK" ]; then
-  echo "APK built at $APK"
+  echo "Debug APK built at $APK"
 else
   echo "Check Gradle output for errors" >&2
 fi

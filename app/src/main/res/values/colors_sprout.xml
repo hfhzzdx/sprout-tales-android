@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Kid-friendly blue theme -->
+    <color name="sprout_blue_primary">#4A90E2</color>
+    <color name="sprout_blue_secondary">#7EC8FF</color>
+    <color name="sprout_blue_bg">#F2F8FF</color>
+</resources>
