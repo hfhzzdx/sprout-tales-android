@@ -3,6 +3,8 @@ name: Android CI
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - "v*"
 
@@ -13,6 +15,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -49,10 +53,39 @@ jobs:
             app/build/outputs/apk/release/*.apk
             app/build/outputs/apk/debug/*.apk
 
-      - name: Create GitHub Release (on tag)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Determine tag
+        id: tag
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            tag="${GITHUB_REF#refs/tags/}"
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch --tags --force
+          latest=$(git tag -l 'v*' | sort -V | tail -n1)
+          if [[ -z "$latest" ]]; then
+            next="v1.0.0"
+          else
+            core="${latest#v}"
+            IFS='.' read -r major minor patch <<< "$core"
+            if [[ -z "$patch" ]]; then patch=0; fi
+            next="v${major}.${minor}.$((patch+1))"
+          fi
+          echo "tag=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag (non-tag runs)
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "${{ steps.tag.outputs.tag }}" -m "CI: auto tag after successful build"
+          git push origin "${{ steps.tag.outputs.tag }}"
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag.outputs.tag }}
           files: |
             app/build/outputs/apk/release/*.apk
             app/build/outputs/apk/debug/*.apk
