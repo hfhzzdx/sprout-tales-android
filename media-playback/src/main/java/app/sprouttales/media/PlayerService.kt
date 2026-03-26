@@ -24,7 +24,7 @@ class PlayerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (session == null) {
-            // MediaSession 可扩展为真正的播放控制，这里先做占位
+            // TODO: init MediaSession
         }
         return START_STICKY
     }
