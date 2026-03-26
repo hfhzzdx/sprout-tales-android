@@ -35,15 +35,26 @@ jobs:
           gradle-version: 8.9
           arguments: assembleRelease --no-daemon
 
-      - name: Upload APK (release unsigned)
+      - name: Build debug APK (signed with debug keystore)
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.9
+          arguments: assembleDebug --no-daemon
+
+      - name: Upload APKs (Artifacts)
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-unsigned
-          path: app/build/outputs/apk/release/*.apk
+          name: app-apks
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/debug/*.apk
 
       - name: Create GitHub Release (on tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: app/build/outputs/apk/release/*.apk
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/debug/*.apk
           generate_release_notes: true
+          make_latest: true
