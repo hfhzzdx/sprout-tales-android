@@ -1,0 +1,30 @@
+{
+  "stories": [
+    {
+      "id": "sample-1",
+      "title": "小熊的分享日",
+      "ageRange": "3-5",
+      "theme": "分享",
+      "paragraphs": [
+        "在森林里，阳光像蜂蜜一样洒下来。",
+        "小熊带来了三颗甜甜的草莓，想和朋友一起吃。",
+        "他们围成一圈，每个人分到一小口，心里都暖暖的。"
+      ],
+      "pictureHints": ["森林"],
+      "durationEstimateSec": 120
+    },
+    {
+      "id": "sample-2",
+      "title": "乐乐学勇气",
+      "ageRange": "6-8",
+      "theme": "勇气",
+      "paragraphs": [
+        "学校的小舞台前，乐乐有点紧张。",
+        "他深呼吸，想到‘勇气像灯，会从一个人点到另一个人’",
+        "他唱完了整首歌，同学们鼓起掌来。"
+      ],
+      "pictureHints": ["校园"],
+      "durationEstimateSec": 180
+    }
+  ]
+}
