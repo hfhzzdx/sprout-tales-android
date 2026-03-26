@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.sprouttales.model.Story
 
@@ -20,9 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val vm: MainViewModel = viewModel(factory = androidx.lifecycle.viewmodel.initializer {
-                        MainViewModel(application)
-                    })
+                    val vm: MainViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                     MainScreen(vm)
                 }
             }
@@ -59,29 +58,6 @@ fun StoryList(stories: List<Story>, onPlay: (Story) -> Unit) {
                 )
                 Divider()
             }
-        }
-    }
-}
-
-@Composable
-fun PlayerPane(current: Story?) {
-    Column(Modifier.fillMaxSize().padding(16.dp)) {
-        if (current == null) {
-            Text("请选择一个故事开始播放")
-            return@Column
-        }
-        Text(current.title, style = MaterialTheme.typography.titleLarge)
-        Spacer(Modifier.height(8.dp))
-        Text("${current.ageRange} · ${current.theme}")
-        Spacer(Modifier.height(16.dp))
-        var idx by remember { mutableStateOf(0) }
-        val paragraphs = current.paragraphs
-        Text(paragraphs.getOrNull(idx) ?: "")
-        Spacer(Modifier.height(16.dp))
-        Row {
-            OutlinedButton(onClick = { if (idx > 0) idx-- }) { Text("上一段") }
-            Spacer(Modifier.width(8.dp))
-            Button(onClick = { if (idx < paragraphs.lastIndex) idx++ }) { Text("下一段") }
         }
     }
 }
