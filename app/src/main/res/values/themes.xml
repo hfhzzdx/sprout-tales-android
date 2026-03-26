@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Use Material Components (MDC) base theme to avoid missing resource on some setups -->
-    <style name="Theme.SproutTales" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
+    <!-- Use a stable platform theme to avoid external style resolution issues -->
+    <style name="Theme.SproutTales" parent="@android:style/Theme.Material.Light.NoActionBar" />
 </resources>

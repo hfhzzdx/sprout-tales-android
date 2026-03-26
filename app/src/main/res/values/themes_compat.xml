@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Compat aliases to satisfy any lingering references in manifests/layouts -->
-    <style name="Theme.Material3.DayNight.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar" />
-    <style name="Theme.MaterialComponents.DayNight.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar" />
+    <!-- Map external theme names to our local Theme.SproutTales to avoid missing style resolution -->
+    <style name="Theme.Material3.DayNight.NoActionBar" parent="@style/Theme.SproutTales" />
+    <style name="Theme.MaterialComponents.DayNight.NoActionBar" parent="@style/Theme.SproutTales" />
 </resources>
