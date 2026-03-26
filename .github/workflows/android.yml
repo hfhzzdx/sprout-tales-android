@@ -1,0 +1,60 @@
+name: Android CI
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Generate offline stories
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.9
+          arguments: :tools:generator:run --no-daemon
+
+      - name: Build unsigned release when no keystore
+        if: ${{ !secrets.ANDROID_KEYSTORE_BASE64 }}
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.9
+          arguments: assembleRelease --no-daemon
+
+      - name: Decode keystore
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+
+      - name: Build signed release
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.9
+          arguments: >-
+            assembleRelease --no-daemon
+            -PstoreFile=release.keystore
+            -PstorePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+            -PkeyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+            -PkeyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
