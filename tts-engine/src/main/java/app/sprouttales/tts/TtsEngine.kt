@@ -24,5 +24,7 @@ class TtsEngine(private val context: Context) : TextToSpeech.OnInitListener {
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, System.currentTimeMillis().toString())
     }
 
+    fun stop() { tts?.stop() }
+
     fun shutdown() { tts?.shutdown() }
 }
