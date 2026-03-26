@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="app.sprouttales">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="35" />
 
@@ -25,7 +24,9 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="app.sprouttales.media.MediaButtonReceiver">
+        <receiver
+            android:name="app.sprouttales.media.MediaButtonReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
