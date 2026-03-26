@@ -27,14 +27,14 @@ jobs:
           gradle-version: 8.9
           arguments: :tools:generator:run --no-daemon
 
-      - name: Build debug APK (signed with default debug keystore)
+      - name: Build release APK (unsigned)
         uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 8.9
-          arguments: assembleDebug --no-daemon
+          arguments: assembleRelease --no-daemon
 
-      - name: Upload APK (debug)
+      - name: Upload APK (release unsigned)
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/*.apk
+          name: app-release-unsigned
+          path: app/build/outputs/apk/release/*.apk
