@@ -58,9 +58,13 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            resValue("string", "app_name", "星芽故事（Debug v1.0.4）")
         }
         release {
             isMinifyEnabled = false
+            resValue("string", "app_name", "星芽故事（Release v1.0.4）")
             if (hasStore) {
                 signingConfig = signingConfigs.getByName("release")
             }

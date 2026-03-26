@@ -9,7 +9,7 @@
 
     <application
         android:name=".SproutApp"
-        android:label="星芽故事"
+        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"
         android:supportsRtl="true"
