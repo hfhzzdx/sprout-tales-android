@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.SproutTales" parent="Theme.Material3.DayNight.NoActionBar" />
+    <!-- Use Material Components (MDC) base theme to avoid missing resource on some setups -->
+    <style name="Theme.SproutTales" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 </resources>
