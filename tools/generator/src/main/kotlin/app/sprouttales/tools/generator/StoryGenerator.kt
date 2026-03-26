@@ -39,7 +39,7 @@ object StoryGenerator {
     }
 
     private fun shortStory(theme: String, place: String, rng: Random): List<String> {
-        val s1 = "在$place里，阳光像蜂蜜一样洒下来。"
+        val s1 = "在${place}里，阳光像蜂蜜一样洒下来。"
         val s2 = "星芽和豆豆决定学会${theme}。"
         val s3 = "他们把叶子做成小船，互相帮助，让小船不翻。"
         val s4 = "风轻轻地吹，心也变得更勇敢。"
@@ -48,7 +48,7 @@ object StoryGenerator {
     }
 
     private fun longStory(theme: String, place: String, rng: Random): List<String> {
-        val p1 = "清晨的$place，露珠一颗一颗像会唱歌。"
+        val p1 = "清晨的${place}，露珠一颗一颗像会唱歌。"
         val p2 = "乐乐遇到一个难题：要不要把漂亮的贝壳和同学分享？"
         val p3 = "他想到老师说过：${theme}像灯，会从一个人点到另一个人。"
         val p4 = "他鼓起勇气，把贝壳放到班级的‘自然角’，大家一起研究它的纹路。"
