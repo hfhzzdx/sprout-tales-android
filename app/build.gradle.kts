@@ -27,7 +27,7 @@ android {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
 
-    packagingOptions {
+    packaging { // replace deprecated packagingOptions
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 
@@ -39,12 +39,18 @@ android {
         jvmTarget = "17"
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file(findProperty("storeFile")?.toString() ?: "")
-            storePassword = findProperty("storePassword")?.toString()
-            keyAlias = findProperty("keyAlias")?.toString()
-            keyPassword = findProperty("keyPassword")?.toString()
+    // Only create signing config when keystore props are provided
+    val hasStore = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
+        .all { (findProperty(it)?.toString()?.isNotBlank() == true) }
+
+    if (hasStore) {
+        signingConfigs {
+            create("release") {
+                storeFile = file(findProperty("storeFile")!!.toString())
+                storePassword = findProperty("storePassword")!!.toString()
+                keyAlias = findProperty("keyAlias")!!.toString()
+                keyPassword = findProperty("keyPassword")!!.toString()
+            }
         }
     }
 
@@ -54,7 +60,6 @@ android {
         }
         release {
             isMinifyEnabled = false
-            val hasStore = (findProperty("storeFile")?.toString()?.isNotBlank() == true)
             if (hasStore) {
                 signingConfig = signingConfigs.getByName("release")
             }
