@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_TOKEN }}
+          # Use default GITHUB_TOKEN for checkout; do not override with PAT to avoid auth failures
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -139,6 +139,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag "${{ steps.tag.outputs.tag }}" -m "CI: auto tag after successful build"
+          # Ensure pushing with PAT
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git push origin "${{ steps.tag.outputs.tag }}"
 
       - name: Create GitHub Release
