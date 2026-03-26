@@ -68,6 +68,13 @@ android {
     }
 }
 
+// Ensure offline stories are generated before any app build on both CI and local
+// This guarantees app/src/main/assets/stories/pack.json exists (≥300 entries)
+@Suppress("UnstableApiUsage")
+tasks.named("preBuild").configure {
+    dependsOn(":tools:generator:run")
+}
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
