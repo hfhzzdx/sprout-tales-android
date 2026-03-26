@@ -45,6 +45,32 @@ jobs:
           gradle-version: 8.9
           arguments: assembleRelease --no-daemon
 
+      - name: Sign release with debug keystore (app-release-signed-debugkey.apk)
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+          if [[ ! -f "$APK" ]]; then
+            echo "Release unsigned APK not found at $APK" >&2
+            exit 1
+          fi
+          SDK_DIR="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          BT_DIR=$(ls -d "$SDK_DIR"/build-tools/* 2>/dev/null | sort -V | tail -n1)
+          if [[ -z "$BT_DIR" ]]; then
+            echo "Build-Tools not found under $SDK_DIR/build-tools" >&2
+            exit 1
+          fi
+          echo "Using Build-Tools: $BT_DIR"
+          "$BT_DIR/zipalign" -p -f 4 "$APK" app/build/outputs/apk/release/app-release-aligned.apk
+          "$BT_DIR/apksigner" sign \
+            --ks "$HOME/.android/debug.keystore" \
+            --ks-key-alias androiddebugkey \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --out app/build/outputs/apk/release/app-release-signed-debugkey.apk \
+            app/build/outputs/apk/release/app-release-aligned.apk
+          "$BT_DIR/apksigner" verify --print-certs app/build/outputs/apk/release/app-release-signed-debugkey.apk
+
       - name: Upload APKs (Artifacts)
         uses: actions/upload-artifact@v4
         with:
